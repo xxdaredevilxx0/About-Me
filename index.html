@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hesham Adel Muhammed - Computer Engineer</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      overflow-x: hidden;
+      background: linear-gradient(to right, #e0f7fa, #ffffff);
+      transition: direction 0.3s ease;
+      scroll-behavior: smooth;
+    }
+
+    /* Header Styles */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.7); /* خلفية شفافة */
+      backdrop-filter: blur(10px); /* تأثير البلور */
+      -webkit-backdrop-filter: blur(10px);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between; /* لتوزيع العناصر على الأطراف */
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(-100%);
+      transition: all 0.5s ease;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    header.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Header Left and Right containers (Desktop Layout) */
+    .header-left-nav,
+    .header-right-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* مسافة بين العناصر */
+    }
+
+    /* Styles for Header text links (About Me, Personal Info, Social Links) */
+    .header-text-link {
+        color: #00796b; /* لون الخط الأخضر */
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: color 0.3s ease, transform 0.2s ease;
+        white-space: nowrap; /* يمنع الكلمات من النزول سطر جديد */
+    }
+    .header-text-link:hover {
+        color: #004d40; /* لون أغمق عند الهوفر */
+        transform: translateY(-2px);
+    }
+
+    /* Styles for Call Me and Lang buttons */
+    .header-action-button {
+        background: transparent; /* خلفية شفافة */
+        color: #00796b; /* لون الخط الأخضر */
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: color 0.3s ease, transform 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .header-action-button:hover {
+      color: #004d40; /* لون أغمق عند الهوفر */
+      transform: scale(1.05);
+    }
+
+    .header-action-button i { /* إخفاء الأيقونة لو كانت موجودة */
+        display: none;
+    }
+
+    /* Hero Section Styles */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      text-align: center;
+      overflow: hidden;
+      background: linear-gradient(to bottom right, #eaf9ff, #ffffff);
+      z-index: 0;
+    }
+
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: linear-gradient(to bottom right, #eaf9ff, #ffffff);
+      z-index: 1;
+      will-change: transform;
+      transition: transform 0.1s linear;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px 50px;
+      border-radius: 25px;
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,255,255,0.4) inset;
+      animation: fadeInZoom 1.4s ease forwards;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    @keyframes fadeInZoom {
+      0% { opacity: 0; transform: scale(0.85) translateY(30px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .hero img {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 6px solid rgba(255, 255, 255, 0.95);
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      object-fit: cover;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+
+    .hero img:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      border-color: #00897b;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      color: #004d40;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.08);
+      letter-spacing: 1px;
+      font-weight: 800;
+    }
+
+    .hero h2 {
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: #333;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+    }
+
+    .hero-actions-top {
+        position: absolute;
+        top: 20px;
+        width: calc(100% - 40px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 3;
+    }
+
+    .hero-actions-top .icon-button {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        color: #004d40;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .hero-actions-top .icon-button:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .hero-quote {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        max-width: 600px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 15px;
+        padding: 15px 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        color: #004d40;
+        font-size: 1.1rem;
+        font-style: italic;
+        text-align: center;
+        z-index: 2;
+        opacity: 0;
+        animation: fadeIn 1.5s ease 1s forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Main Content Area */
+    .content {
+      padding: 120px 20px 60px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .section {
+      margin-bottom: 50px;
+      padding: 25px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    h3 {
+      color: #00796b;
+      margin-bottom: 15px;
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+
+    .section p {
+        line-height: 1.7;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .blur-text-box {
+        background-color: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 15px;
+        padding: 20px;
+        margin-top: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        width: 100%;
+    }
+
+    /* Social Media Links */
+    .socials {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 30px;
+      margin-top: 25px;
+    }
+
+    .social-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 30px;
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      text-decoration: none;
+      color: #004d40;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .social-box:hover {
+      transform: translateY(-10px) scale(1.03);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+    }
+
+    .social-box img {
+      width: 55px;
+      height: 55px;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 3px 5px rgba(0,0,0,0.15));
+    }
+
+    /* Back to Top Button */
+    #backToTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 99;
+      /* Background and blur for transparency */
+      background: rgba(255, 255, 255, 0.15); /* Slightly more opaque than header for visibility */
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.5); /* Border for definition */
+      outline: none;
+      color: #00796b; /* Green color for the arrow */
+      cursor: pointer;
+      width: 55px; /* Fixed width for a better circle */
+      height: 55px; /* Fixed height for a better circle */
+      border-radius: 50%;
+      font-size: 1.8rem; /* Larger icon */
+      display: flex; /* To center the icon */
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15); /* Softer shadow */
+      transition: background-color 0.3s, transform 0.3s, color 0.3s;
+    }
+
+    #backToTopBtn:hover {
+      background-color: rgba(255, 255, 255, 0.25); /* Slightly more opaque on hover */
+      transform: translateY(-7px) scale(1.05); /* More pronounced lift */
+      color: #004d40; /* Darker green on hover */
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column; /* العناصر تتكدس رأسياً في الموبايل */
+        padding: 10px 15px;
+        gap: 10px; /* مسافة بين الصفوف الجديدة */
+      }
+      .header-left-nav { /* About Me, Personal Info, Social Links (Mobile Top) */
+          order: 1; /* تظهر في الأول */
+          width: 100%;
+          justify-content: space-around; /* توزيع متساوي للأيقونات */
+          gap: 0; /* إزالة الـ gap الأصلي */
+      }
+      .header-right-actions { /* Call me, Lang (Mobile Bottom) */
+          order: 2; /* تظهر في الثاني */
+          width: 100%;
+          justify-content: space-around; /* توزيع متساوي للأزرار */
+          gap: 0; /* إزالة الـ gap الأصلي */
+      }
+
+      /* Reduce font size for mobile header text links/buttons */
+      .header-text-link, .header-action-button {
+          font-size: 0.9rem;
+          padding: 8px 5px;
+      }
+      .header-action-button {
+          flex: 1; /* لتأخذ الأزرار مساحة متساوية */
+      }
+
+      .hero-content {
+        padding: 30px 35px;
+        max-width: 90%;
+      }
+      .hero img {
+        width: 150px;
+        height: 150px;
+      }
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+      .hero h2 {
+        font-size: 1.3rem;
+      }
+      .hero-actions-top {
+        top: 15px;
+        width: calc(100% - 30px);
+      }
+      .hero-actions-top .icon-button {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+      }
+      .hero-quote {
+          font-size: 0.9rem;
+          padding: 10px 15px;
+          bottom: 15px;
+          width: 90%;
+      }
+
+      .content {
+        padding: 100px 15px 40px;
+      }
+
+      .section {
+        padding: 20px;
+        margin-bottom: 40px;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+      }
+
+      .blur-text-box {
+        padding: 15px;
+      }
+
+      .socials {
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 20px;
+      }
+
+      .social-box {
+        padding: 20px;
+        border-radius: 25px;
+      }
+
+      .social-box img {
+        width: 45px;
+        height: 45px;
+        margin-bottom: 10px;
+      }
+
+      #backToTopBtn {
+          bottom: 20px;
+          right: 20px;
+          width: 50px;
+          height: 50px;
+          font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .socials {
+        grid-template-columns: 1fr;
+      }
+      .social-box {
+        max-width: 250px;
+        margin: auto;
+      }
+      header {
+        padding: 10px 10px;
+      }
+      .hero-content {
+        padding: 25px;
+      }
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      .hero h2 {
+        font-size: 1.1rem;
+      }
+      .hero-quote {
+          font-size: 0.8rem;
+          padding: 8px 12px;
+          bottom: 10px;
+      }
+      /* Ensure text links/buttons stack better on very small screens */
+      .header-left-nav, .header-right-actions {
+          flex-direction: column; /* تتكدس عمودياً */
+          align-items: stretch; /* تمتد لتملأ العرض */
+          gap: 5px;
+      }
+      .header-text-link, .header-action-button {
+          width: 100%; /* تأخذ العرض الكامل */
+          text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="stickyHeader">
+    <div class="header-left-nav">
+      <a href="#about-me" class="header-text-link" data-en="About Me" data-ar="نبذة عني">About Me</a>
+      <a href="#personal-info" class="header-text-link" data-en="Personal Info" data-ar="معلومات شخصية">Personal Info</a>
+      <a href="#social-links" class="header-text-link" data-en="Social Links" data-ar="روابط التواصل">Social Links</a>
+    </div>
+    
+    <div class="header-right-actions">
+      <a href="tel:+201142067623" class="header-action-button">
+        <span data-en="Call me" data-ar="اتصل بي">Call me</span>
+      </a>
+      <button class="header-action-button lang-toggle" onclick="toggleLanguage()">AR</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div id="particles-js"></div>
+    <div class="hero-actions-top">
+        <button class="icon-button" onclick="toggleLanguage()">
+            <i class="fas fa-globe"></i>
+        </button>
+        <a href="tel:+201142067623" class="icon-button">
+            <i class="fas fa-phone-alt"></i>
+        </a>
+    </div>
+    <div class="hero-content">
+      <a href="#" id="profileLink">
+        <img src="myphoto.jpg" alt="Your Photo" id="profilePhoto" loading="lazy">
+      </a>
+      <h1 data-en="HESHAM ADEL MUHAMMED" data-ar="هشام عادل محمد">HESHAM ADEL MUHAMMED</h1>
+      <h2 data-en="Computer Engineer" data-ar="مهندس كمبيوتر">Computer Engineer</h2>
+    </div>
+    <p class="hero-quote" data-en="&quot;The future belongs to those who believe in the beauty of their dreams.&quot; - Eleanor Roosevelt" data-ar="&quot;المستقبل ينتمي لأولئك الذين يؤمنون بجمال أحلامهم.&quot; - إلينور روزفلت">
+        "The future belongs to those who believe in the beauty of their dreams." - Eleanor Roosevelt
+    </p>
+  </section>
+
+  <div class="content">
+    <div class="section" id="about-me">
+      <h3 data-en="About Me" data-ar="نبذة عني">About Me</h3>
+      <p class="blur-text-box" data-en="I am a good computer user with solid understanding of system-related issues and software. I have a strong command of the English language, which supports my technical skills. I'm a law graduate with a Good degree." data-ar="أنا مستخدم جيد للكمبيوتر ولدي فهم قوي للمشكلات والبرامج المتعلقة بالنظام. لدي إجادة قوية للغة الإنجليزية، مما يدعم مهاراتي التقنية. أنا خريج حقوق بتقدير جيد.">
+        I am a good computer user with solid understanding of system-related issues and software. I have a strong command of the English language, which supports my skills. I'm a law graduate with a Good degree.
+      </p>
+    </div>
+
+    <div class="section" id="personal-info">
+      <h3 data-en="Personal Info" data-ar="معلومات شخصية">Personal Info</h3>
+      <p class="blur-text-box" data-en="Age: 23" data-ar="العمر: ٢٣">Age: 23</p>
+      <p class="blur-text-box" data-en="Degree: Bachelor of Law (Good)" data-ar="المؤهل: خريج كلية الحقوق بتقدير جيد">Degree: Bachelor of Law (Good)</p>
+      <p class="blur-text-box" data-en="Location: [Add your address here]" data-ar="العنوان: [ضع عنوانك هنا]">Location: [Add your address here]</p>
+    </div>
+
+    <div class="section" id="social-links">
+      <h3 data-en="Social Links" data-ar="روابط التواصل">Social Links</h3>
+      <div class="socials">
+        <a class="social-box" href="http://www.facebook.com/hesham.adel.muhammed"target="_blank"><img src="facebook.svg" alt="Facebook" loading="lazy" /><span>Facebook</span></a>
+        <a class="social-box" href="http://wa.me/+201142067623"target="_blank"><img src="whatsapp.svg" alt="WhatsApp" loading="lazy" /><span>WhatsApp</span></a>
+        <a class="social-box" href="http://t.me/lBasiony"target="_blank"><img src="telegram.svg" alt="Telegram" loading="lazy" /><span>Telegram</span></a>
+        <a class="social-box" href="mailto:adelh2672@gmail.com"target="_blank"><img src="gmail.svg" alt="Gmail" loading="lazy" /><span>Gmail</span></a>
+        <a class="social-box" href="https://www.instagram.com/hesham.adel.muhammed"target="_blank"><img src="instagram.svg" alt="Instagram" loading="lazy" /><span>Instagram</span></a>
+        <a class="social-box" href="#"target="_blank"><img src="twitter.svg" alt="Twitter" loading="lazy" /><span>Twitter</span></a>
+        <a class="social-box" href="#"target="_blank"><img src="tiktok.svg" alt="TikTok" loading="lazy" /><span>TikTok</span></a>
+        <a class="social-box" href="#"target="_blank"><img src="threads.svg" alt="Threads" loading="lazy" /><span>Threads</span></a>
+      </div>
+    </div>
+  </div>
+
+  <button onclick="topFunction()" id="backToTopBtn" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="particles.min.js"></script>
+
+  <script>
+    // Particles.js configuration (unchanged)
+    particlesJS('particles-js', {
+      "particles": {
+        "number": {
+          "value": 80,
+          "density": {
+            "enable": true,
+            "value_area": 1200
+          }
+        },
+        "color": {
+          "value": ["#eaf9ff", "#d0f0fa", "#a8e6ff", "#7dd7f5"]
+        },
+        "shape": {
+          "type": "circle",
+          "stroke": {
+            "width": 0,
+            "color": "#000000"
+          },
+          "polygon": {
+            "nb_sides": 5
+          }
+        },
+        "opacity": {
+          "value": 0.4,
+          "random": true,
+          "anim": {
+            "enable": true,
+            "speed": 0.7,
+            "opacity_min": 0.03,
+            "sync": false
+          }
+        },
+        "size": {
+          "value": 12,
+          "random": true,
+          "anim": {
+            "enable": false,
+            "speed": 20,
+            "size_min": 0.1,
+            "sync": false
+          }
+        },
+        "line_linked": {
+          "enable": false
+        },
+        "move": {
+          "enable": true,
+          "speed": 1.2,
+          "direction": "bottom-right",
+          "random": true,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false,
+          "attract": {
+            "enable": false,
+            "rotateX": 600,
+            "rotateY": 1200
+          }
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "bubble"
+          },
+          "onclick": {
+            "enable": true,
+            "mode": "push"
+          },
+          "resize": true
+        },
+        "modes": {
+          "grab": {
+            "distance": 400,
+            "line_linked": {
+              "opacity": 1
+            }
+          },
+          "bubble": {
+            "distance": 160,
+            "size": 25,
+            "duration": 2,
+            "opacity": 0.8,
+            "speed": 3
+          },
+          "repulse": {
+            "distance": 200,
+            "duration": 0.4
+          },
+          "push": {
+            "particles_nb": 4
+          },
+          "remove": {
+            "particles_nb": 2
+          }
+        }
+      },
+      "retina_detect": true
+    });
+
+    // Parallax Effect for Particles.js (unchanged)
+    const particlesDiv = document.getElementById('particles-js');
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.scrollY;
+      particlesDiv.style.transform = `translateY(${scrollPos * 0.2}px)`;
+    });
+
+    // Sticky Header Logic (unchanged)
+    const header = document.getElementById('stickyHeader');
+    const hero = document.querySelector('.hero');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > hero.offsetHeight / 2) {
+        header.classList.add('show');
+      } else {
+        header.classList.remove('show');
+      }
+    });
+
+    // Back to Top Button Logic (unchanged)
+    let mybutton = document.getElementById("backToTopBtn");
+
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        mybutton.style.display = "flex"; /* Changed from block to flex to center icon */
+      } else {
+        mybutton.style.display = "none";
+      }
+    }
+
+    function topFunction() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+
+    // Profile Photo click event (unchanged logic)
+    document.getElementById("profilePhoto").addEventListener("click", () => {
+      window.location.href = "#"; // يرجع لأعلى الصفحة أو ممكن تضيف لينك تاني هنا
+    });
+
+    // Language Toggle Logic (updated for all new header text elements)
+    function toggleLanguage() {
+      const toggleBtn = document.querySelector('.lang-toggle');
+      const isEnglish = toggleBtn.textContent === 'AR';
+
+      document.querySelectorAll('[data-en]').forEach(el => {
+        if (el.dataset.en) {
+          el.textContent = isEnglish ? el.dataset.ar : el.dataset.en;
+        }
+      });
+      // Update the toggle button text itself
+      toggleBtn.textContent = isEnglish ? 'EN' : 'AR';
+      document.body.style.direction = isEnglish ? 'rtl' : 'ltr';
+    }
+
+    // Smooth Scroll for Navigation Links (now text links)
+    document.querySelectorAll('.header-text-link').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+  </script>
+
+</body>
+</html>
