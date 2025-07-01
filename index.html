@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Me</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      overflow-x: hidden;
+      background: linear-gradient(to right, #e0f7fa, #ffffff);
+      transition: direction 0.3s ease;
+      scroll-behavior: smooth;
+      position: relative; /* Needed for particles to cover full height */
+      min-height: 100vh; /* Ensure body takes full viewport height */
+    }
+
+    /* Particles.js full page background */
+    #particles-js {
+      position: fixed; /* Changed to fixed to cover the entire page on scroll */
+      width: 100%;
+      height: 100%; /* Changed to 100% to cover the entire viewport */
+      top: 0;
+      left: 0;
+      background: transparent;
+      z-index: -1; /* Placed behind all content */
+      will-change: transform;
+      transition: transform 0.1s linear;
+    }
+
+    /* Header Styles */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      padding: 12px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(-100%);
+      transition: all 0.5s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+
+    header.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Header Left and Right containers (Desktop Layout) */
+    .header-left-nav,
+    .header-right-actions {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
+
+    /* Styles for Header text links (About Me, Personal Info, Social Links) */
+    .header-text-link {
+        color: #00796b;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1.05rem;
+        transition: color 0.3s ease, transform 0.2s ease, text-shadow 0.3s ease;
+        white-space: nowrap;
+        position: relative;
+    }
+    .header-text-link:hover {
+        color: #004d40;
+        transform: translateY(-3px);
+        text-shadow: 0 0 8px rgba(0, 121, 107, 0.3);
+    }
+    /* Underline effect for header links */
+    .header-text-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        display: block;
+        margin-top: 5px;
+        right: 0;
+        background: #00796b;
+        transition: width 0.3s ease;
+    }
+    .header-text-link:hover::after {
+        width: 100%;
+        left: 0;
+        right: auto;
+    }
+    body[style*="direction: rtl"] .header-text-link::after {
+      left: 0;
+      right: auto;
+    }
+    body[style*="direction: rtl"] .header-text-link:hover::after {
+      left: auto;
+      right: 0;
+    }
+
+    /* Styles for Call Me and Lang buttons */
+    .header-action-button {
+        background: #00796b;
+        color: #ffffff;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        white-space: nowrap;
+        box-shadow: 0 4px 10px rgba(0, 121, 107, 0.2);
+    }
+
+    .header-action-button:hover {
+      background-color: #004d40;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 121, 107, 0.3);
+    }
+
+    .header-action-button i {
+        display: none;
+    }
+
+    /* Mobile Menu (Hamburger) Button */
+    .menu-toggle {
+        display: none;
+        font-size: 1.7rem;
+        cursor: pointer;
+        color: #00796b;
+        background: transparent;
+        border: none;
+        padding: 5px;
+        z-index: 1001;
+        transition: transform 0.3s ease;
+    }
+    .menu-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    /* Mobile Nav Dropdown */
+    .mobile-nav-dropdown {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 65px;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        padding: 15px 25px;
+        z-index: 999;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.4s ease-out, padding 0.4s ease-out, border-radius 0.4s ease;
+    }
+
+    .mobile-nav-dropdown.show {
+        display: flex;
+        max-height: 400px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .mobile-nav-dropdown .header-text-link,
+    .mobile-nav-dropdown .header-action-button {
+        padding: 15px 20px;
+        text-align: center;
+        width: 100%;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        color: #004d40;
+        font-weight: 500;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .mobile-nav-dropdown .header-text-link:last-child,
+    .mobile-nav-dropdown .header-action-button:last-child {
+        border-bottom: none;
+    }
+    .mobile-nav-dropdown .header-action-button {
+        background-color: #00796b;
+        color: #ffffff;
+        border: none;
+        margin-top: 15px;
+        border-radius: 10px;
+        box-shadow: 0 3px 8px rgba(0, 121, 107, 0.2);
+    }
+    .mobile-nav-dropdown .header-action-button:hover {
+        background-color: #004d40;
+        transform: translateY(-2px);
+    }
+    .mobile-nav-dropdown .header-text-link:hover {
+        background-color: #e0f7fa;
+        transform: translateX(5px);
+    }
+
+    /* Hero Section Styles */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      text-align: center;
+      overflow: hidden;
+      background: transparent;
+      z-index: 0; /* Keep hero content above particles */
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2; /* Ensure hero content is above particles */
+      background: rgba(255, 255, 255, 0.15);
+      padding: 45px 55px;
+      border-radius: 30px;
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.5) inset;
+      animation: fadeInZoom 1.4s ease forwards;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center; 
+      gap: 20px;
+    }
+
+    @keyframes fadeInZoom {
+      0% { opacity: 0; transform: scale(0.85) translateY(30px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .hero img {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 8px solid rgba(255, 255, 255, 0.98);
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      object-fit: cover;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    .hero img:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      border-color: #00897b;
+    }
+
+    /* Styles for combined name and plain job title */
+    .full-name-combined {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 2.8rem;
+        color: #004d40;
+        text-shadow: 3px 3px 7px rgba(0, 0, 0, 0.12);
+        letter-spacing: 1.5px;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 10px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        justify-content: flex-start; /* Changed to flex-start */
+        padding-left: 0;
+        text-align: left; /* Changed to left */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .name-icon {
+        font-size: 3rem;
+        color: #00796b;
+        vertical-align: middle;
+    }
+
+    .job-title-plain {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1.8rem;
+        font-weight: 500;
+        color: #333;
+        text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.9);
+        margin: 0;
+        width: 100%;
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        justify-content: flex-start; /* Changed to flex-start */
+        padding-left: 0;
+        text-align: left; /* Changed to left */
+    }
+
+    /* Style for job title icon */
+    .job-title-icon {
+        font-size: 2rem;
+        color: #00796b;
+    }
+
+    /* --- Styles for icons under job title (these are buttons, keep centered) --- */
+    .job-title-icons {
+      display: flex;
+      gap: 25px;
+      margin-top: 20px;
+      justify-content: center; /* Still centered for these action buttons */
+      align-items: center;
+      width: 100%;
+    }
+
+    .job-icon-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #00796b;
+      font-size: 1.15rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 10px 15px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+    }
+
+    .job-icon-link:hover {
+      transform: translateY(-7px) scale(1.07);
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+      color: #004d40;
+    }
+    /* --- End New Styles --- */
+
+    .hero-actions-top {
+        position: absolute;
+        top: 25px;
+        width: calc(100% - 50px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 3;
+    }
+
+    .hero-actions-top .icon-button {
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        color: #004d40;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-actions-top .icon-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-7px) scale(1.07);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .hero-quote {
+        position: absolute;
+        bottom: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 85%;
+        max-width: 650px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 18px 30px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        color: #004d40;
+        font-size: 1.15rem;
+        font-style: italic;
+        text-align: center;
+        z-index: 2;
+        opacity: 0;
+        animation: fadeIn 1.5s ease 1s forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Main Content Area */
+    .content {
+      padding: 80px 20px;
+      max-width: 950px;
+      margin: auto;
+      position: relative; /* Needed to be above particles */
+      z-index: 1;
+      background: transparent; /* Ensure content background doesn't hide particles */
+    }
+
+    .section {
+      margin-bottom: 60px;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border-radius: 30px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,255,255,0.5) inset;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .section:hover {
+        transform: translateY(-7px);
+        box-shadow: 0 18px 45px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.7) inset;
+    }
+
+    h3 {
+      color: #00796b;
+      margin-bottom: 20px;
+      font-weight: 700;
+      font-size: 2rem;
+      font-family: 'Playfair Display', serif; /* Changed font for headings */
+    }
+
+    .section p {
+        line-height: 1.8;
+        color: #333;
+        margin-bottom: 12px;
+        font-size: 1.05rem;
+    }
+
+    .blur-text-box {
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border-radius: 20px;
+        padding: 22px;
+        margin-top: 25px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        width: 100%;
+        color: #333;
+        font-size: 1.1rem;
+    }
+
+    /* Skills Section Styles */
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+    }
+
+    .skill-item {
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-radius: 20px;
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        color: #004d40;
+        font-weight: 600;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .skill-item:hover {
+        transform: translateY(-7px) scale(1.05);
+        box-shadow: 0 10px 22px rgba(0,0,0,0.15);
+    }
+
+    .skill-item i {
+        font-size: 2.8rem;
+        margin-bottom: 12px;
+        color: #00796b;
+    }
+    .skill-item span {
+        font-size: 1rem;
+    }
+
+    /* Social Media Links */
+    .socials {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 35px;
+      margin-top: 30px;
+    }
+
+    .social-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 35px;
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      text-decoration: none;
+      color: #004d40;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .social-box:hover {
+      transform: translateY(-12px) scale(1.05);
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 18px 30px rgba(0,0,0,0.25);
+    }
+
+    .social-box img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+    }
+    .social-box span {
+        font-size: 1.05rem;
+    }
+
+    /* Back to Top Button */
+    #backToTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 35px;
+      right: 35px;
+      z-index: 99;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      outline: none;
+      color: #00796b;
+      cursor: pointer;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+      transition: background-color 0.3s, transform 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+
+    #backToTopBtn:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-9px) scale(1.08);
+      color: #004d40;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header {
+        padding: 10px 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      }
+      .header-left-nav,
+      .header-right-actions {
+          display: none;
+      }
+      .menu-toggle {
+          display: block;
+          font-size: 1.6rem;
+      }
+      .header-right-actions .lang-toggle {
+        display: block;
+        padding: 5px 10px;
+        font-size: 0.95rem;
+      }
+
+      .mobile-nav-dropdown {
+        top: 60px;
+        padding: 10px 20px;
+      }
+      .mobile-nav-dropdown.show {
+        max-height: 350px;
+      }
+      .mobile-nav-dropdown .header-text-link,
+      .mobile-nav-dropdown .header-action-button {
+        padding: 12px 15px;
+        font-size: 1rem;
+      }
+      .mobile-nav-dropdown .header-action-button {
+        margin-top: 10px;
+      }
+
+      .hero-content {
+        padding: 30px 35px;
+        max-width: 90%;
+        gap: 15px;
+        align-items: center;
+      }
+      .hero img {
+        width: 150px;
+        height: 150px;
+        border-width: 6px;
+      }
+
+      /* Responsive for combined name and job title */
+      .full-name-combined {
+        font-size: 1.3rem; /* Adjusted for mobile */
+        font-weight: 500;
+        gap: 10px;
+        align-items: center;
+        justify-content: flex-start; /* Changed to flex-start */
+        text-align: left; /* Changed to left */
+        white-space: normal; /* Allow wrapping on mobile */
+        text-overflow: unset; /* Remove ellipsis on mobile */
+      }
+      .name-icon {
+        font-size: 1.5rem;
+      }
+      .job-title-plain {
+        font-size: 1.3rem;
+        font-weight: 500;
+        align-items: baseline;
+        justify-content: flex-start; /* Changed to flex-start */
+        text-align: left; /* Changed to left */
+      }
+      .job-title-icon {
+        font-size: 1.5rem;
+      }
+
+      /* Responsive for job-title-icons */
+      .job-title-icons {
+        gap: 15px;
+        margin-top: 10px;
+        justify-content: center;
+      }
+      .job-icon-link {
+        font-size: 1rem;
+        padding: 6px 10px;
+      }
+      .job-icon-link i {
+        font-size: 1.7rem;
+        margin-bottom: 3px;
+      }
+      /* --- End Responsive for job-title-icons --- */
+
+      .hero-actions-top {
+        top: 15px;
+        width: calc(100% - 30px);
+      }
+      .hero-actions-top .icon-button {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+      }
+      .hero-quote {
+          font-size: 0.9rem;
+          padding: 10px 15px;
+          bottom: 15px;
+          width: 90%;
+      }
+
+      .content {
+        padding: 40px 15px;
+      }
+
+      .section {
+        padding: 20px;
+        margin-bottom: 40px;
+        border-radius: 20px;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+
+      .blur-text-box {
+        padding: 15px;
+        border-radius: 15px;
+        margin-top: 20px;
+        font-size: 1rem;
+      }
+
+      /* Skills Section Responsive */
+      .skills-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 15px;
+      }
+      .skill-item {
+        padding: 12px;
+        border-radius: 15px;
+      }
+      .skill-item i {
+        font-size: 2rem;
+        margin-bottom: 8px;
+      }
+      .skill-item span {
+        font-size: 0.9rem;
+      }
+
+      /* Social Media Links - Mobile Adjustments */
+      .socials {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+
+      .social-box {
+        padding: 15px;
+        border-radius: 20px;
+        min-width: unset;
+        height: 120px;
+      }
+
+      .social-box img {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 8px;
+      }
+      .social-box span {
+        font-size: 0.85rem;
+      }
+
+      #backToTopBtn {
+          bottom: 20px;
+          right: 20px;
+          width: 50px;
+          height: 50px;
+          font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      /* Social Media Links - Very Small Mobile Adjustments */
+      .socials {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .social-box {
+        padding: 10px;
+        height: 100px;
+        border-radius: 15px;
+      }
+      .social-box img {
+        width: 35px;
+        height: 35px;
+        margin-bottom: 5px;
+      }
+      .social-box span {
+        font-size: 0.8rem;
+      }
+
+      header {
+        padding: 10px 10px;
+      }
+      .hero-content {
+        padding: 25px;
+      }
+      /* Responsive for combined name and job title (very small) */
+      .full-name-combined {
+        font-size: 1.1rem;
+        font-weight: 500;
+      }
+      .name-icon {
+        font-size: 1.3rem;
+      }
+      .job-title-plain {
+        font-size: 1.1rem;
+        font-weight: 500;
+      }
+      .job-title-icon {
+        font-size: 1.3rem;
+      }
+      /* --- Responsive for job-title-icons (very small) --- */
+      .job-title-icons {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .job-icon-link {
+        font-size: 0.9rem;
+        padding: 5px 8px;
+        flex: 1 1 auto;
+        min-width: 80px;
+      }
+      .job-icon-link i {
+        font-size: 1.5rem;
+      }
+      /* --- End Responsive for job-title-icons (very small) --- */
+
+      .hero-quote {
+          font-size: 0.8rem;
+          padding: 8px 12px;
+          bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="particles-js"></div> <header id="stickyHeader">
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="header-right-actions">
+        <button class="header-action-button lang-toggle" onclick="toggleLanguage()">AR</button>
+    </div>
+
+    <div class="mobile-nav-dropdown" id="mobileNavDropdown">
+      <a href="#about-me" class="header-text-link" data-en="About Me" data-ar="نبذة عني">About Me</a>
+      <a href="#personal-info" class="header-text-link" data-en="Personal Info" data-ar="معلومات شخصية">Personal Info</a>
+      <a href="#social-links" class="header-text-link" data-en="Social Links" data-ar="روابط التواصل">Social Links</a>
+      <a href="#skills" class="header-text-link" data-en="Skills" data-ar="المهارات">Skills</a>
+      <a href="tel:+201142067623" class="header-action-button" data-en="Call me" data-ar="اتصل بي">Call me</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-actions-top">
+        <button class="icon-button" onclick="toggleLanguage()">
+            <i class="fas fa-globe"></i>
+        </button>
+        <a href="#personal-info" class="icon-button">
+            <i class="fas fa-info-circle"></i>
+        </a>
+    </div>
+    <div class="hero-content">
+      <a href="#" id="profileLink">
+        <img src="myphoto.jpg" alt="Your Photo" id="profilePhoto" loading="lazy">
+      </a>
+      
+      <h1 class="full-name-combined" data-en="Hesham Adel" data-ar="هشام عادل">
+        <i class="fas fa-user-circle name-icon"></i> Hesham Adel
+      </h1>
+      
+      <h2 class="job-title-plain" data-en="Computer Engineer" data-ar="مهندس كمبيوتر">
+        <i class="fas fa-briefcase job-title-icon"></i> Computer Engineer
+      </h2>
+
+      <div class="job-title-icons">
+        <a href="#about-me" class="job-icon-link" data-en="About Me" data-ar="نبذة عني">
+          <i class="fas fa-user"></i> <span class="job-icon-text" data-en="About Me" data-ar="نبذة عني">About Me</span>
+        </a>
+        <a href="tel:+201142067623" class="job-icon-link" data-en="Call me" data-ar="اتصل بي">
+            <i class="fa-solid fa-phone"></i> <span class="job-icon-text" data-en="Call me" data-ar="اتصل بي">Call me</span>
+        </a>
+        <a href="#social-links" class="job-icon-link" data-en="Social Links" data-ar="روابط التواصل">
+          <i class="fas fa-share-alt"></i> <span class="job-icon-text" data-en="Social Links" data-ar="روابط التواصل">Social Links</span>
+        </a>
+      </div>
+      </div>
+    <p class="hero-quote" data-en="&quot;The future belongs to those who believe in the beauty of their dreams.&quot;" data-ar="&quot;المستقبل ينتمي لأولئك الذين يؤمنون بجمال أحلامهم.&quot;">
+        "The future belongs to those who believe in the beauty of their dreams."
+    </p>
+  </section>
+
+  <div class="content">
+    <div class="section" id="about-me">
+      <h3 data-en="About Me" data-ar="نبذة عني">About Me</h3>
+      <p class="blur-text-box" data-en="I am a good computer user with solid understanding of system-related issues and software. I have a strong command of the English language, which supports my technical skills. I'm a law graduate with a Good degree." data-ar="أنا مستخدم جيد للكمبيوتر ولدي فهم قوي للمشكلات والبرامج المتعلقة بالنظام. لدي إجادة قوية للغة الإنجليزية، مما يدعم مهاراتي التقنية. أنا خريج حقوق بتقدير جيد.">
+        I am a good computer user with solid understanding of system-related issues and software. I have a strong command of the English language, which supports my skills. I'm a law graduate with a Good degree.
+      </p>
+    </div>
+
+    <div class="section" id="personal-info">
+      <h3 data-en="Personal Info" data-ar="معلومات شخصية">Personal Info</h3>
+      <p class="blur-text-box" data-en="Age: 23 Years Old" data-ar="العمر: ٢٣">Age: 23 Years Old</p>
+      <p class="blur-text-box" data-en="Degree: Graduate Of The Faculty Of Law, Tanta University" data-ar="المؤهل: خريج كلية الحقوق بتقدير جيد">Degree: Graduate Of The Faculty Of Law, Tanta University</p>
+      <p class="blur-text-box" data-en="Location: Tanta" data-ar="العنوان: طنطا">Location: Tanta</p>
+    </div>
+
+    <div class="section" id="skills"> <h3 data-en="Skills" data-ar="المهارات">Skills</h3>
+        <div class="skills-grid">
+            <div class="skill-item">
+                <i class="fas fa-desktop"></i>
+                <span data-en="Computer Usage" data-ar="استخدام الحاسوب">Computer Usage</span>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-tools"></i>
+                <span data-en="System Troubleshooting" data-ar="حل مشكلات الأنظمة">System Troubleshooting</span>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-code"></i>
+                <span data-en="Software Knowledge" data-ar="معرفة بالبرمجيات">Software Knowledge</span>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-globe-americas"></i>
+                <span data-en="English Fluency" data-ar="إجادة الإنجليزية">English Fluency</span>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-book-open"></i>
+                <span data-en="Legal Concepts" data-ar="المفاهيم القانونية">Legal Concepts</span>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-handshake"></i>
+                <span data-en="Problem Solving" data-ar="حل المشكلات">Problem Solving</span>
+            </div>
+            </div>
+    </div>
+
+    <div class="section" id="social-links">
+      <h3 data-en="Social Links" data-ar="روابط التواصل">Social Links</h3>
+      <div class="socials">
+        <a class="social-box" href="http://www.facebook.com/hesham.adel.muhammed"target="_blank"><img src="facebook.svg" alt="Facebook" loading="lazy" /><span>Facebook</span></a>
+        <a class="social-box" href="http://wa.me/+201142067623"target="_blank"><img src="whatsapp.svg" alt="WhatsApp" loading="lazy" /><span>WhatsApp</span></a>
+        <a class="social-box" href="http://t.me/IBasiony"target="_blank"><img src="telegram.svg" alt="Telegram" loading="lazy" /><span>Telegram</span></a>
+        <a class="social-box" href="mailto:adelh2672@gmail.com"target="_blank"><img src="gmail.svg" alt="Gmail" loading="lazy" /><span>Gmail</span></a>
+        <a class="social-box" href="https://www.instagram.com/hesham.adel.muhammed"target="_blank"><img src="instagram.svg" alt="Instagram" loading="lazy" /><span>Instagram</span></a>
+        <a class="social-box" href="http://www.x.com/IBasio0ny"target="_blank"><img src="twitter.svg" alt="Twitter" loading="lazy" /><span>Twitter</span></a>
+        <a class="social-box" href="http://www.tiktok.com/@hesham.adel.muhammed"target="_blank"><img src="tiktok.svg" alt="TikTok" loading="lazy" /><span>TikTok</span></a>
+        <a class="social-box" href="http://www.threads.com/hesham.adel.muhammed"target="_blank"><img src="threads.svg" alt="Threads" loading="lazy" /><span>Threads</span></a>
+        <a class="social-box" href="https://www.linkedin.com/in/hesham-a-muhammed-0442b130a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"target="_blank"><img src="linkedin.svg" alt="linkedin" loading="lazy" /><span>Linkedin</span></a>
+        <a class="social-box" href="#"target="_blank"><img src="discord.svg" alt="discord" loading="lazy" /><span>Discord</span></a>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <button onclick="topFunction()" id="backToTopBtn" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="particles.min.js"></script>
+
+  <script>
+    // Particles.js configuration (unchanged from previous, but now applies to full page)
+    particlesJS('particles-js', {
+      "particles": {
+        "number": {
+          "value": 80,
+          "density": {
+            "enable": true,
+            "value_area": 1200
+          }
+        },
+        "color": {
+          "value": ["#eaf9ff", "#d0f0fa", "#a8e6ff", "#7dd7f5"]
+        },
+        "shape": {
+          "type": "circle",
+          "stroke": {
+            "width": 0,
+            "color": "#000000"
+          },
+          "polygon": {
+            "nb_sides": 5
+          }
+        },
+        "opacity": {
+          "value": 0.4,
+          "random": true,
+          "anim": {
+            "enable": true,
+            "speed": 0.7,
+            "opacity_min": 0.03,
+            "sync": false
+          }
+        },
+        "size": {
+          "value": 12,
+          "random": true,
+          "anim": {
+            "enable": false,
+            "speed": 20,
+            "size_min": 0.1,
+            "sync": false
+          }
+        },
+        "line_linked": {
+          "enable": false
+        },
+        "move": {
+          "enable": true,
+          "speed": 1.2,
+          "direction": "bottom-right",
+          "random": true,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false,
+          "attract": {
+            "enable": false,
+            "rotateX": 600,
+            "rotateY": 1200
+          }
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "bubble"
+          },
+          "onclick": {
+            "enable": true,
+            "mode": "push"
+          },
+          "resize": true
+        },
+        "modes": {
+          "grab": {
+            "distance": 400,
+            "line_linked": {
+              "opacity": 1
+            }
+          },
+          "bubble": {
+            "distance": 160,
+            "size": 25,
+            "duration": 2,
+            "opacity": 0.8,
+            "speed": 3
+          },
+          "repulse": {
+            "distance": 200,
+            "duration": 0.4
+          },
+          "push": {
+            "particles_nb": 4
+          },
+            "remove": {
+            "particles_nb": 2
+          }
+        }
+      },
+      "retina_detect": true
+    });
+
+    // Sticky Header Logic (unchanged)
+    const header = document.getElementById('stickyHeader');
+    const hero = document.querySelector('.hero');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > hero.offsetHeight / 2) {
+        header.classList.add('show');
+      } else {
+        header.classList.remove('show');
+      }
+    });
+
+    // Back to Top Button Logic (unchanged)
+    let mybutton = document.getElementById("backToTopBtn");
+
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        mybutton.style.display = "flex";
+      } else {
+        mybutton.style.display = "none";
+      }
+    }
+
+    function topFunction() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+
+    // Profile Photo click event (unchanged logic)
+    document.getElementById("profilePhoto").addEventListener("click", () => {
+      window.location.href = "#";
+    });
+
+    // Language Toggle Logic (updated for all new header text elements and new name elements and new job icons)
+    function toggleLanguage() {
+      const toggleBtn = document.querySelector('.lang-toggle');
+      const isEnglish = toggleBtn.textContent === 'AR';
+
+      document.querySelectorAll('[data-en]').forEach(el => {
+        if (el.dataset.en) {
+          el.textContent = isEnglish ? el.dataset.ar : el.dataset.en;
+        }
+      });
+      // Update the toggle button text itself
+      toggleBtn.textContent = isEnglish ? 'EN' : 'AR';
+      document.body.style.direction = isEnglish ? 'rtl' : 'ltr';
+    }
+
+    // Smooth Scroll for Navigation Links (now text links)
+    document.querySelectorAll('.header-text-link, .job-icon-link').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+
+            // Close the mobile dropdown after clicking a link
+            if (window.innerWidth <= 768) {
+                const mobileNavDropdown = document.getElementById('mobileNavDropdown');
+                if (mobileNavDropdown.classList.contains('show')) {
+                    mobileNavDropdown.classList.remove('show');
+                }
+            }
+        });
+    });
+
+    // Mobile Menu Toggle Logic
+    document.getElementById('menuToggle').addEventListener('click', function() {
+        const mobileNavDropdown = document.getElementById('mobileNavDropdown');
+        mobileNavDropdown.classList.toggle('show');
+    });
+
+    // Hide dropdown on resize if larger than mobile breakpoint
+    window.addEventListener('resize', function() {
+        const mobileNavDropdown = document.getElementById('mobileNavDropdown');
+        if (window.innerWidth > 768 && mobileNavDropdown.classList.contains('show')) {
+            mobileNavDropdown.classList.remove('show');
+        }
+    });
+  </script>
+
+</body>
+</html>
